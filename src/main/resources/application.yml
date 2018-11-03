@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/water
+    username: root
+    password: xiaoduan123
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+  mvc:
+    static-path-pattern: /static/**
+  thymeleaf:
+    cache: false
+mybatis:
+  mapper-locations: classpath:com/xd/mapper/*Mapper.xml
+logging:
+  level:
+    com.xd.mapper: debug
+  file: waterAll.log

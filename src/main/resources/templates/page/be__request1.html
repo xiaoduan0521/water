@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title>湖南省自来水公司营销管理信息系统</title>
+
+    <link rel="stylesheet" href="/static/css/reset.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/text.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/form.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/buttons.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/grid.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/layout.css" type="text/css" media="screen" title="no title"/>
+
+    <link rel="stylesheet" href="/static/css/ui-darkness/jquery-ui-1.8.12.custom.css" type="text/css" media="screen"
+          title="no title"/>
+    <link rel="stylesheet" href="/static/css/plugin/jquery.visualize.css" type="text/css" media="screen"
+          title="no title"/>
+    <link rel="stylesheet" href="/static/css/plugin/facebox.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/plugin/uniform.default.css" type="text/css" media="screen"
+          title="no title"/>
+    <link rel="stylesheet" href="/static/css/plugin/dataTables.css" type="text/css" media="screen" title="no title"/>
+
+    <link rel="stylesheet" href="/static/css/custom.css" type="text/css" media="screen" title="no title">
+    <style type="text/css">
+        #t_meterCount {
+            text-align: right;
+            width: 30px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="wrapper">
+    <div id="header">
+        <div class="content_pad">
+            <h1><a href="/syEmp/login">湖南省自来水公司营销管理信息系统</a></h1>
+            <ul id="nav">
+                <li class="nav_dropdown nav_icon" th:each="menu,iterStar :${session.syEmp.syMenuList}"
+                    th:if="${menu.parent} == -1">
+                    <a href="javascript:;"><span th:class="${menu.icon}"></span><label th:text="${menu.menuname}"/></a>
+                    <div class="nav_menu">
+                        <ul>
+                            <li th:each="menuSon:${session.syEmp.syMenuList}" th:if="${menuSon.parent} == ${menu.id}"><a
+                                    th:href="${menuSon.url}" th:text="${menuSon.menuname}"></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav_current nav_dropdown nav_icon_only">
+                    <a href="javascript:;">&nbsp;</a>
+                    <div class="nav_menu">
+                        <ul>
+                            <li><a href="/syEmp/login">我的工作台</a></li>
+                            <li><a href="/templates?tp=page/sys_pwd">修改密码</a></li>
+                            <li><a href="/syEmp/loginOut" onclick="return loginOut()">退出系统</a></li>
+                        </ul>
+                    </div> <!-- .menu -->
+                </li>
+            </ul>
+        </div> <!-- .content_pad -->
+    </div> <!-- #header -->
+    <div id="masthead">
+        <div>
+            <span id="pagetitle"><a href="javascript:;">用户申请</a></span>
+            <span id="welcome_span" th:text="欢迎回来，+${session.syEmp.empname}"></span>
+        </div>
+    </div> <!-- #masthead -->
+
+    <div id="content" class="xgrid">
+        <form action="" method="post">
+            <div class="x12">
+                <h2>
+                    用户申请 - 办理新开户业务
+                    <a style="float:right" th:href="@{/templates(tp='/page/be__request')}">返回</a>
+                </h2>
+                <div class="tab_container">
+                    <ul class="tabs">
+                        <li><a href="#tab1">申请表</a></li>
+                        <li><a href="#tab2">新户详细表</a></li>
+                    </ul>
+                    <div class="tab_content_container">
+                        <div id="tab1" class="tab_content">
+                            <table width="100%">
+                                <thead>
+                                <tr>
+                                    <th width="60"></th>
+                                    <th width="220"></th>
+                                    <th width="60"></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>用户名称</td>
+                                    <td><input name="username" required="required" type="text" maxlength="40"/></td>
+                                    <td>用户类型</td>
+                                    <td>
+                                        <select style="width:158px;" name="usertype" required="required">
+                                            <option value="公户">公户</option>
+                                            <option value="私户" selected="selected">私户</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>联系人</td>
+                                    <td>
+                                        <input name="linkman" maxlength="10" required="required"/>
+                                    </td>
+                                    <td>联系电话</td>
+                                    <td>
+                                        <input name="phone" type="text" maxlength="11" required="required"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>用户地址</td>
+                                    <td colspan="3">
+                                        <input name="address" type="text" maxlength="50" required="required" size="68"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>用水量</td>
+                                    <td>
+                                        <input name="maxamount" type="number" min="0" max="9999" required="required"/>
+                                    </td>
+                                    <td>申请表径</td>
+                                    <td>
+                                        <select style="width:158px;" name="metertypeid">
+                                            <option th:each="meterType :${mts}" th:text="${meterType.metertypename}"
+                                                    th:value="${meterType.id}">DN10
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>房屋层次</td>
+                                    <td>
+                                        <input name="househeight" type="number" min="1" max="9999" required="required"/>
+                                    </td>
+                                    <td>接水用途</td>
+                                    <td>
+                                        <input name="usetarget" type="text" maxlength="20" required="required"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>备注说明</td>
+                                    <td colspan="3">
+                                        <input name="userremark" type="text" maxlength="100" size="68"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="tab2" class="tab_content">
+                            申请装表表数
+                            <input id="t_meterCount" name="metercount" value="1" type="number" min="1" max="100" required="required"/>
+                            <button class="btn btn-small" onClick="setMeter();">确定</button>
+                            <div id="meters">
+                                <table class="data display">
+                                    <thead>
+                                        <tr>
+                                            <th width="30">序号</th>
+                                            <th width="160">姓名</th>
+                                            <th width="160">电话</th>
+                                            <th width="160">短信号码</th>
+                                            <th width="160">地址</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td><input name='usernames' required='required' maxlength='40'/></td>
+                                            <td><input name="phones" required="required" maxlength="11"/></td>
+                                            <td><input name="smsphones" required="required" maxlength="11"/></td>
+                                            <td><input name="addresss" required="required" maxlength="100"/></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- .x12 -->
+            <div class="centerButtons">
+                <button class="btn" type="submit">办理</button>
+                <a class="btn btn-grey" th:href="@{/templates(tp='/page/be__request')}">返回</a>
+            </div>
+        </form>
+    </div> <!-- #content -->
+
+    <div id="footer">
+        <div class="content_pad">
+            <p>&copy; 2013-11 版权所有 <a href="#">湖南省自来水公司</a>. 技术支持 <a href="#">华瑞教育</a>.</p>
+        </div> <!-- .content_pad -->
+    </div> <!-- #footer -->
+
+</div> <!-- #wrapper -->
+
+<script src="/static/js/jquery/jquery-1.5.2.min.js"></script>
+<script src="/static/js/jquery/jquery-ui-1.8.12.custom.min.js"></script>
+<script src="/static/js/misc/excanvas.min.js"></script>
+<script src="/static/js/jquery/facebox.js"></script>
+<script src="/static/js/jquery/jquery.visualize.js"></script>
+<script src="/static/js/jquery/jquery.dataTables.min.js"></script>
+<script src="/static/js/jquery/jquery.tablesorter.min.js"></script>
+<script src="/static/js/jquery/jquery.uniform.min.js"></script>
+<script src="/static/js/jquery/jquery.placeholder.min.js"></script>
+
+<script src="/static/js/widgets.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/workpace.js"></script>
+<script type="text/javascript">
+    function setMeter(){
+        var n = $('#t_meterCount').val();
+        if(isNaN(n))return;    //不是数字
+        if(n<=0||n>100)return; //不合理
+        var rows = $('table.data tbody tr');
+        if(rows.length == n)return; //行数相同
+        if(rows.length<n){//需增加行数
+            for(var i=rows.length;i<n;i++){
+                $('table.data tbody').append('<tr><td>' + (i+1) +
+                    '</td><td><input name=\'usernames\' required=\'required\' maxlength=\'40\' />' +
+                    '</td><td><input  name="phones" required="required" maxlength="11"/></td><td><input/>' +
+                    '</td><td><input name="phones" required="required" maxlength="11" /></td><td></td></tr>');
+            }
+        }else{//需减少行数
+            $('table.data tbody tr:gt('+(n-1)+')').remove();
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        Dashboard.init();
+        //选项卡初始化
+        $('.tab_container').tabs();
+    });
+</script>
+
+</body>
+
+</html>

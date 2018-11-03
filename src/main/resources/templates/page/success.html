@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>湖南省自来水公司营销管理信息系统</title>
+    <link rel="stylesheet" href="/static/css/reset.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/text.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/form.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/buttons.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/grid.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/layout.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/ui-darkness/jquery-ui-1.8.12.custom.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/plugin/jquery.visualize.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/plugin/facebox.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/plugin/uniform.default.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/plugin/dataTables.css" type="text/css" media="screen" title="no title" />
+    <link rel="stylesheet" href="/static/css/custom.css" type="text/css" media="screen" title="no title">
+</head>
+<body>
+
+<body>
+
+<div id="wrapper">
+
+    <div id="header">
+        <div class="content_pad">
+            <h1><a href="/syEmp/login">湖南省自来水公司营销管理信息系统</a></h1>
+            <ul id="nav">
+                <li class="nav_dropdown nav_icon" th:each="menu,iterStar :${session.syEmp.syMenuList}" th:if="${menu.parent} == -1" >
+                    <a href="javascript:;" ><span th:class="${menu.icon}"></span><label th:text="${menu.menuname}"/></a>
+                    <div class="nav_menu">
+                        <ul>
+                            <li th:each="menuSon:${session.syEmp.syMenuList}" th:if="${menuSon.parent} == ${menu.id}"><a th:href="${menuSon.url}" th:text="${menuSon.menuname}"></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav_current nav_dropdown nav_icon_only">
+                    <a href="javascript:;">&nbsp;</a>
+                    <div class="nav_menu">
+                        <ul>
+                            <li><a href="/syEmp/login">我的工作台</a></li>
+                            <li><a href="/templates?tp=page/sys_pwd">修改密码</a></li>
+                            <li><a href="/syEmp/loginOut" onclick="return loginOut()">退出系统</a></li>
+                        </ul>
+                    </div> <!-- .menu -->
+                </li>
+            </ul>
+        </div> <!-- .content_pad -->
+    </div> <!-- #header -->
+    <div id="masthead">
+        <div>
+            <span id="welcome_span" th:text="欢迎回来，+${session.syEmp.empname}">欢迎回来，马云</span>
+        </div>
+    </div> <!-- #masthead -->
+
+    <div id="content" class="xgrid">
+
+        <div class="x12">
+
+            <h2 class="color">恭喜你，操作成功。</h2>
+
+            <div style="min-height:300px;">
+                <img style="float:left; margin-top:80px;" src="/static/images/success.jpg"/>
+                <div style="padding-top:100px;padding-left:200px;" class="color">
+                    这是一个操作成功演示页面。<br/>
+                    不知道因为什么原因，你居然操作成功了。<br/>
+                    建议你开香槟庆祝。
+                </div>
+            </div>
+            <div class="clear"></div>
+            <div style="text-align:center;">
+                <button class="btn" onClick="history.back(-1);">继续</button>
+            </div>
+
+        </div> <!-- .x12 -->
+
+    </div> <!-- #content -->
+
+    <div id="footer">
+        <div class="content_pad">
+            <p>&copy; 2013-11 版权所有 <a href="#">湖南省自来水公司</a>. 技术支持 <a href="#">华瑞教育</a>.</p>
+        </div> <!-- .content_pad -->
+    </div> <!-- #footer -->
+
+</div> <!-- #wrapper -->
+<script src="/static/js/jquery/jquery-1.5.2.min.js"></script>
+<script src="/static/js/jquery/jquery-ui-1.8.12.custom.min.js"></script>
+<script src="/static/js/misc/excanvas.min.js"></script>
+<script src="/static/js/jquery/facebox.js"></script>
+<script src="/static/js/jquery/jquery.visualize.js"></script>
+<script src="/static/js/jquery/jquery.dataTables.min.js"></script>
+<script src="/static/js/jquery/jquery.tablesorter.min.js"></script>
+<script src="/static/js/jquery/jquery.uniform.min.js"></script>
+<script src="/static/js/jquery/jquery.placeholder.min.js"></script>
+<script src="/static/js/widgets.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/workpace.js"></script>
+<script type="text/javascript">
+    $(document).ready ( function ()
+    {
+        Dashboard.init ();
+    });
+</script>
+
+</body>
+
+</html>

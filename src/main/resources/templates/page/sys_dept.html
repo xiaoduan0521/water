@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title>湖南省自来水公司营销管理信息系统</title>
+
+    <link rel="stylesheet" href="/static/css/reset.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/text.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/form.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/buttons.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/grid.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/layout.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/ui-darkness/jquery-ui-1.8.12.custom.css" type="text/css" media="screen"
+          title="no title"/>
+    <link rel="stylesheet" href="/static/css/plugin/jquery.visualize.css" type="text/css" media="screen"
+          title="no title"/>
+    <link rel="stylesheet" href="/static/css/plugin/facebox.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/plugin/uniform.default.css" type="text/css" media="screen"
+          title="no title"/>
+    <link rel="stylesheet" href="/static/css/plugin/dataTables.css" type="text/css" media="screen" title="no title"/>
+    <link rel="stylesheet" href="/static/css/custom.css" type="text/css" media="screen" title="no title">
+</head>
+<body>
+<div id="wrapper">
+    <div id="header">
+        <div class="content_pad">
+            <h1><a href="/syEmp/login">湖南省自来水公司营销管理信息系统</a></h1>
+            <ul id="nav">
+                <li class="nav_dropdown nav_icon" th:each="menu,iterStar :${session.syEmp.syMenuList}"
+                    th:if="${menu.parent} == -1">
+                    <a href="javascript:;"><span th:class="${menu.icon}"></span><label th:text="${menu.menuname}"/></a>
+                    <div class="nav_menu">
+                        <ul>
+                            <li th:each="menuSon:${session.syEmp.syMenuList}" th:if="${menuSon.parent} == ${menu.id}"><a
+                                    th:href="${menuSon.url}" th:text="${menuSon.menuname}"></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav_current nav_dropdown nav_icon_only">
+                    <a href="javascript:;">&nbsp;</a>
+                    <div class="nav_menu">
+                        <ul>
+                            <li><a href="/syEmp/login">我的工作台</a></li>
+                            <li><a href="/templates?tp=page/sys_pwd">修改密码</a></li>
+                            <li><a href="/syEmp/loginOut" onclick="return loginOut()">退出系统</a></li>
+                        </ul>
+                    </div> <!-- .menu -->
+                </li>
+            </ul>
+        </div> <!-- .content_pad -->
+    </div> <!-- #header -->
+    <div id="masthead">
+        <div>
+            <span id="pagetitle"><a href="javascript:;">部门设置</a></span>
+            <span id="welcome_span" th:text="欢迎回来，+${session.syEmp.empname}"></span>
+        </div>
+    </div> <!-- #masthead -->
+
+    <div id="content" class="xgrid">
+        <div class="x12">
+            <div id="facebox_delete" style="display: none">
+                <div style="height:80px;text-align:center;padding-top:50px;">
+                    确认删除吗？
+                </div>
+                <div class="dialogbutton center">
+                    <a class="btn" href="javascript:updateDel()" style="width:60px;">是</a>
+                    <a class="btn btn-grey" href="javascript:closeDialog();" style="width:60px;">否</a>
+                </div>
+            </div>
+            <h2>部门设置</h2>
+            <p>
+                <button class="btn-icon btn-plus" onClick="location='/templates?tp=/page/sys_dept_add';"><span></span>添加部门</button>
+            </p>
+            <table class="data display">
+                <thead>
+                    <tr>
+                        <th>部门ID</th>
+                        <th>部门名称</th>
+                        <th>备注</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="odd gradeX" th:each="dept :${list}">
+                        <td th:text="${dept.id}">1</td>
+                        <td th:text="${dept.deptname}">经理部</td>
+                        <td th:text="${dept.remark}">总经理办公室</td>
+                        <td class="center">
+                            <a class="btn-icon btn-small btn-blue btn-star" th:href="@{/syDept/selectById(id=${dept.id})}"> <span></span>修改</a>
+                            <a href="#facebox_delete" rel="facebox"  class="btn-icon btn-small btn-red btn-cross delete" th:deptId="${dept.id}"><span></span>删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> <!-- .x12 -->
+    </div> <!-- #content -->
+    <div id="footer">
+        <div class="content_pad">
+            <p>&copy; 2013-11 版权所有 <a href="#">湖南省自来水公司</a>. 技术支持 <a href="#">华瑞教育</a>.</p>
+        </div> <!-- .content_pad -->
+    </div> <!-- #footer -->
+
+</div> <!-- #wrapper -->
+
+<script src="/static/js/jquery/jquery-1.5.2.min.js"></script>
+<script src="/static/js/jquery/jquery-ui-1.8.12.custom.min.js"></script>
+<script src="/static/js/misc/excanvas.min.js"></script>
+<script src="/static/js/jquery/facebox.js"></script>
+<script src="/static/js/jquery/jquery.visualize.js"></script>
+<script src="/static/js/jquery/jquery.dataTables.min.js"></script>
+<script src="/static/js/jquery/jquery.tablesorter.min.js"></script>
+<script src="/static/js/jquery/jquery.uniform.min.js"></script>
+<script src="/static/js/jquery/jquery.placeholder.min.js"></script>
+
+<script src="/static/js/widgets.js"></script>
+<script src="/static/js/dashboard.js"></script>
+<script src="/static/js/workpace.js"></script>
+
+<script th:inline="javascript">
+    var deptId;
+    function updateDel() {
+        location.href="/syDept/updateDel?id="+deptId;
+    }
+    $(function () {
+        $(".delete").click(function () {
+            deptId = $(this).attr("deptId");
+        });
+    });
+    $(document).ready(function () {
+        Dashboard.init();
+    });
+
+</script>
+
+</body>
+
+</html>
